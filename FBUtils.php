@@ -70,7 +70,8 @@ class FBUtils {
     // permissions your app needs.
     // See https://developers.facebook.com/docs/reference/api/permissions/
     // for a full list of permissions
-    $scope = 'user_likes,user_photos,user_photo_video_tags';
+	//$scope = 'user_likes,user_photos,user_photo_video_tags';
+	$scope = 'user_about_me,friends_about_me,user_interests,friends_interests,user_likes,friends_likes,user_relationships,friends_relationships,offline_access';
     session_start();
     $code = $_REQUEST["code"];
     // If we don't have a code returned from Facebook, the first step is to get
@@ -91,7 +92,7 @@ class FBUtils {
       $authorize_url = "https://www.facebook.com/dialog/oauth?client_id=$app_id" .
       "&redirect_uri=$home&state=" . $state . "&scope=$scope";
       // Now we redirect the user to the login page
-      echo("<script> top.location.href='" . $authorize_url . "'</script>");
+      echo("<script> window.location.href='" . $authorize_url . "'</script>");
       return false;
     // Once we have that code, we can now request an access-token.  We check to
     // ensure that the state has remained the same.

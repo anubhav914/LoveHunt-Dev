@@ -33,7 +33,10 @@ class AppInfo {
    * @return the home URL for this site
    */
   public static function getHome () {
-    return ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?: "http") . "://" . $_SERVER['HTTP_HOST'] . "/";
+	return ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?: "http") . "://" . $_SERVER['HTTP_HOST'] . "/";
+	//return ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?: "http") . "://apps.facebook.com/lovehunt/";
+	//return ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?: "http") . "://" .getenv('FACEBOOK_APP_URL') . "/";
+
   }
 
 }

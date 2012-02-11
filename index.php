@@ -1,18 +1,13 @@
 <?php
 
+//header('X-Frame-Options: GOFORIT'); 
+
 // Enforce https on production
+
 if ($_SERVER['HTTP_X_FORWARDED_PROTO'] == "http" && $_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
   header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
   exit();
 }
-
-/**
- * This sample app is provided to kickstart your experience using Facebook's
- * resources for developers.  This sample app provides examples of several
- * key concepts, including authentication, the Graph API, and FQL (Facebook
- * Query Language). Please visit the docs at 'developers.facebook.com/docs'
- * to learn more about the resources available to you
- */
 
 // Provides access to Facebook specific utilities defined in 'FBUtils.php'
 require_once('FBUtils.php');
@@ -32,57 +27,32 @@ require_once('utils.php');
  ****************************************************************************/
 
 // Log the user in, and get their access token
-/*
-echo AppInfo::getHome() . "<br /><br />";
-echo AppInfo::appID() . "<br /><br />";
-echo AppInfo::appSecret() . "<br /><br />";
- */
 $token = FBUtils::login(AppInfo::getHome());
-//var_dump($token);
-
 if ($token) {
 
-  // Fetch the viewer's basic information, using the token just provided
-  $basic = FBUtils::fetchFromFBGraph("me?access_token=$token");
-  $my_id = assertNumeric(idx($basic, 'id'));
+	session_start();
+	$_SESSION['token'] = $token;
 
-  // Fetch the basic info of the app that they are using
-  $app_id = AppInfo::appID();
-  $app_info = FBUtils::fetchFromFBGraph("$app_id?access_token=$token");
+	// Fetch the viewer's basic information, using the token just provided
+  	$basic = FBUtils::fetchFromFBGraph("me?access_token=$token");
+	$my_id = assertNumeric(idx($basic, 'id'));
 
-  // This fetches some things that you like . 'limit=*" only returns * values.
-  // To see the format of the data you are retrieving, use the "Graph API
-  // Explorer" which is at https://developers.facebook.com/tools/explorer/
-  $likes = array_values(
-    idx(FBUtils::fetchFromFBGraph("me/likes?access_token=$token&limit=4"), 'data', null, false)
-  );
+	
+	// Fetch the basic info of the app that they are using
+	$app_id = AppInfo::appID();
+	$app_info = FBUtils::fetchFromFBGraph("$app_id?access_token=$token");
 
-  // This fetches 4 of your friends.
-  $friends = array_values(
-    idx(FBUtils::fetchFromFBGraph("me/friends?access_token=$token&limit=4"), 'data', null, false)
-  );
 
-  // And this returns 16 of your photos.
-  $photos = array_values(
-    idx($raw = FBUtils::fetchFromFBGraph("me/photos?access_token=$token&limit=16"), 'data', null, false)
-  );
 
-  // Here is an example of a FQL call that fetches all of your friends that are
-  // using this app
-  $app_using_friends = FBUtils::fql(
-    "SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1",
-    $token
-  );
+	// This formats our home URL so that we can pass it as a web request
+	$encoded_home = urlencode(AppInfo::getHome());
+	$redirect_url = $encoded_home . 'close.php';
 
-  // This formats our home URL so that we can pass it as a web request
-  $encoded_home = urlencode(AppInfo::getHome());
-  $redirect_url = $encoded_home . 'close.php';
-
-  // These two URL's are links to dialogs that you will be able to use to share
-  // your app with others.  Look under the documentation for dialogs at
-  // developers.facebook.com for more information
-  $send_url = "https://www.facebook.com/dialog/send?redirect_uri=$redirect_url&display=popup&app_id=$app_id&link=$encoded_home";
-  $post_to_wall_url = "https://www.facebook.com/dialog/feed?redirect_uri=$redirect_url&display=popup&app_id=$app_id";
+	// These two URL's are links to dialogs that you will be able to use to share
+	// your app with others.  Look under the documentation for dialogs at
+	// developers.facebook.com for more information
+	$send_url = "https://www.facebook.com/dialog/send?redirect_uri=$redirect_url&display=popup&app_id=$app_id&link=$encoded_home";
+	$post_to_wall_url = "https://www.facebook.com/dialog/feed?redirect_uri=$redirect_url&display=popup&app_id=$app_id";
 } 
 
 else {
@@ -101,6 +71,103 @@ else {
 <!-- and echoEntity() will echo the sanitized content.  Both of  -->
 <!-- these functions are located and documented in 'utils.php'.  -->
 <!DOCTYPE html>
+
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+
+		<!-- We get the name of the app out of the information fetched -->
+		<title><?php echo(idx($app_info, 'name')) ?></title>
+		<link rel="stylesheet" href="stylesheets/screen.css" media="screen">
+		<link rel="icon" type="image/png" href="images/logo.png" /> 
+		<!-- These are Open Graph tags.  They add meta data to your  -->
+		<!-- site that facebook uses when your content is shared     -->
+		<!-- over facebook.  You should fill these tags in with      -->
+		<!-- your data.  To learn more about Open Graph, visit       -->
+		<!-- 'https://developers.facebook.com/docs/opengraph/'       -->
+		<meta property="og:title" content=""/>
+		<meta property="og:type" content=""/>
+		<meta property="og:url" content=""/>
+		<meta property="og:image" content=""/>
+		<meta property="og:site_name" content=""/>
+		<?php echo('<meta property="fb:app_id" content="' . AppInfo::appID() . '" />'); ?>
+
+		<link rel='stylesheet' type='text/css' href='stylesheets/style.css'>
+		<script type='text/javascript' src='javascript.js'></script>
+		<script src="http://connect.facebook.net/en_US/all.js"></script>
+	</head>
+
+	<body>
+		<div id='container'>
+			<div id='header'>
+				<div id='logo'><img src="https://graph.facebook.com/me/picture?type=square&access_token=<?php echoEntity($token) ?>"></div>
+				<div id="appContent">
+					<div id='appName'>Welcome, <strong><?php echo idx($basic, 'name'); ?></strong></div>
+					<div id="appInfo">Find love among Your Friends</div>
+				</div>   <!--div appContent ends here -->
+			</div>		<!--div header ends here -->
+
+			<div class='clear'></div>
+			<div id='menubar'>
+				<div id='home' class="menuLinks" >Home</div>
+				<div id='hunt' class="menuLinks" ><a href="hunt.php">Hunt! </a></div>
+				<div id='matches' class="menuLinks" >Matches</div>
+				<div id='myLikes' class="menuLinks" >My Likes</div>
+				<div id='dislikes' class="menuLinks" >Dislikes</div>
+				<div id='removed' class="menuLinks" >Removed</div>
+			</div >   <!--div menubar ends here -->
+
+			<div class='clear'></div>
+			<div id='loadcontent' style="display:none;"><img id="loadimage" src="images/preloader.gif"/> </div>
+			<div id="content">
+				<div id="bigLogo"></div>
+				<div id="description">
+					<div id="text">
+						<p>Love hunt helps you find love among friends<br />without the risk losing their friendship.</p><p>Your choices are private. We share 'Mutual<br /> Likes' with the couple only.</p>
+					</div> <!-- div text ends here-->
+					<input id="startButton" type = 'button' value = 'Start Hunting' />
+				</div> 		<!-- div description ends here -->
+				<div class="clear"></div>
+				<div id="bottomimage"></div>
+			</div>		<!-- div content ends here -->
+		</div>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?
+/*
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -198,101 +265,24 @@ else {
         </ul>
       </div>
 
-      <div class="list inline">
-        <h3>Recent photos</h3>
-        <ul class="photos">
-          <?php
-            foreach ($photos as $key => $photo) {
-              // Extract the pieces of info we need from the requests above
-              $src = idx($photo, 'source');
-              $name = idx($photo, 'name');
-              $id = assertNumeric(idx($photo, 'id'));
-              $class = ($key%4 === 0) ? ' class="first-column"' : '';
+      
+	  </section>
 
-              // Here we link each photo we display to it's location on Facebook
-              echo('
-                <li style="background-image: url(' . $src . ')"' . $class . '>
-                  <a href="#" onclick="window.open(\'http://www.facebook.com/' .$id . '\')">
-                    ' . $name . '
-                  </a>
-                </li>'
-              );
-            }
-          ?>
-        </ul>
-      </div>
+	<section class = "clearfix">
+		<div class = "list">
+		<?
+			echo('<pre>');
+			print_r($data);
+			echo('<br />');
+			print_r($family_data);
+			echo('<br />');
+			print_r($books);
+			echo('</pre>')
+		?>
+		</div>
+	</section>
 
-      <div class="list">
-        <h3>Things you like</h3>
-        <ul class="things">
-          <?php
-            foreach ($likes as $like) {
-              // Extract the pieces of info we need from the requests above
-              $id = assertNumeric(idx($like, 'id'));
-              $item = idx($like, 'name');
-              // This display's the object that the user liked as a link to
-              // that object's page.
-              echo('
-                <li>
-                  <a href="#" onclick="window.open(\'http://www.facebook.com/' .$id .'\')">
-                    <img src="https://graph.facebook.com/' . $id . '/picture?type=square" alt="' . $item . '">
-                    ' . $item . '
-                  </a>
-                </li>');
-            }
-          ?>
-        </ul>
-      </div>
-
-      <div class="list">
-        <h3>Friends using this app</h3>
-        <ul class="friends">
-          <?php
-            foreach ($app_using_friends as $auf) {
-              // Extract the pieces of info we need from the requests above
-              $uid = assertNumeric(idx($auf, 'uid'));
-              $pic = idx($auf, 'pic_square');
-              $name = idx($auf, 'name');
-              echo('
-                <li>
-                  <a href="#" onclick="window.open(\'http://www.facebook.com/' .$uid . '\')">
-                    <img src="https://graph.facebook.com/' . $uid . '/picture?type=square" alt="' . $name . '">
-                    ' . $name . '
-                  </a>
-                </li>');
-            }
-          ?>
-        </ul>
-      </div>
-    </section>
-
-    <section id="guides" class="clearfix">
-      <h1>Learn More About Heroku &amp; Facebook Apps</h1>
-      <ul>
-        <li>
-          <a href="http://www.heroku.com/" class="icon heroku">Heroku</a>
-          <p>Learn more about <a href="http://www.heroku.com/">Heroku</a>, or read developer docs in the Heroku <a href="http://devcenter.heroku.com/">Dev Center</a>.</p>
-        </li>
-        <li>
-          <a href="http://developers.facebook.com/docs/guides/web/" class="icon websites">Websites</a>
-          <p>
-            Drive growth and engagement on your site with
-            Facebook Login and Social Plugins.
-          </p>
-        </li>
-        <li>
-          <a href="http://developers.facebook.com/docs/guides/mobile/" class="icon mobile-apps">Mobile Apps</a>
-          <p>
-            Integrate with our core experience by building apps
-            that operate within Facebook.
-          </p>
-        </li>
-        <li>
-          <a href="http://developers.facebook.com/docs/guides/canvas/" class="icon apps-on-facebook">Apps on Facebook</a>
-          <p>Let users find and connect to their friends in mobile apps and games.</p>
-        </li>
-      </ul>
-    </section>
-  </body>
-</html>
-
+    </body>
+	</html>
+*/
+?>
