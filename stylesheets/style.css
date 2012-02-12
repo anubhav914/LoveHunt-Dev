@@ -12,7 +12,6 @@ img{
 	padding-right:20px; */
 }
 #header {
-	height:40px;
 	padding-top:14px;
 	padding-bottom:14px;
 	float:left;
@@ -36,7 +35,7 @@ img{
 }
 #menubar {
 	height:30px;
-	width:728px;
+	width:730px;
 	background-image:url(../images/samples-bg.png);
 	background-repeat:repeat-x;
 /*	background-color:#f7f7f7; */
@@ -79,13 +78,15 @@ img{
 	border-bottom:solid;
 	border-bottom-width:1px;
 	border-bottom-color:#e9e9e9;
-	background-color:#FFF;
+	border-right:solid;
+	border-right-width:1px;
+	border-right-color:#e9e9e9;
+
 }
 
 .hidden_friends
 {
 	display:none;
-	height:53px;
 	width:704px;
 	padding-top:12px;
 	padding-bottom:10px;
@@ -94,6 +95,9 @@ img{
 	border-bottom:solid;
 	border-bottom-width:1px;
 	border-bottom-color:#e9e9e9;
+	border-right:solid;
+	border-right-width:1px;
+	border-right-color:#e9e9e9;
 
 }
 
@@ -104,18 +108,36 @@ img{
 .friendImage{
 	float:left;
 }
+.image_tag{
+	height: 60px;
+	width: 60px; 
+}
 .friendInfo{
 	float:left;
 	padding-left:15px;
 	width:435px;
+	font-size:12px;
 }
 .friendName {
 	margin-top:5px;
+	font-size:18px;
 }
 .friendName a{
 	text-decoration:none;
 	color: #3b5998;
 	font-weight:bold;
+}
+
+.things{
+	float:left;
+	margin-left:7px;
+	margin-top:7px;
+}
+
+
+.things_images{
+	height:40px;
+	width:40px;
 }
 
 .friendName a:hover {
