@@ -17,7 +17,18 @@
 		<meta property="og:image" content=""/>
 		<meta property="og:site_name" content=""/>
 		<?php echo('<meta property="fb:app_id" content="' . AppInfo::appID() . '" />'); ?>
-
+		<script>
+      		function popup(pageURL, title,w,h) {
+        		var left = (screen.width/2)-(w/2);
+        		var top = (screen.height/2)-(h/2);
+        		var targetWin = window.open(
+          		pageURL,
+          		title,
+          		'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left
+          		);
+      		}				
+    	</script>
+    
 		<link rel='stylesheet' type='text/css' href='stylesheets/style.css'>
 		<script type='text/javascript' src='lovehunt.js'></script>
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -38,10 +49,10 @@
 			<div id='menubar'>
 				<div id='home' class="menuLinks" >Home</div>
 				<div id='hunt' class="menuLinks" ><a href="hunt.php">Hunt! </a></div>
-				<div id='matches' class="menuLinks" >Matches</div>
-				<div id='myLikes' class="menuLinks" >My Likes</div>
-				<div id='dislikes' class="menuLinks" >Dislikes</div>
-				<div id='removed' class="menuLinks" >Removed</div>
+				<div id='matches' class="menuLinks" ><a href="match.php">Matches</a></div>
+				<div id='myLikes' class="menuLinks" ><a href="likes.php">My Likes</a></div>
+				<div id='dislikes' class="menuLinks" ><a href="dislikes.php">Dislikes</a></div>
+				<div id='removed' class="menuLinks" ><a href="removed.php">Removed</a></div>
 			</div >   <!--div menubar ends here -->
 
 			<div class='clear'></div>

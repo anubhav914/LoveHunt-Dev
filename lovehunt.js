@@ -35,14 +35,16 @@ function fade_out_callback(counter, count)
 		$('#friend' + new_counter).css('display', 'block').hide().fadeIn(2000);
 		//$('#friend' + new_counter).show('slow');		
 	}
-	if(tagged_friends_count == count)
-		alert("there are no more elemetns to tag");
+	if(tagged_friends_count == count){
+
+		$("#no_content").css('display', 'block').hide().fadeIn(2000);
+	}
 }
 
 
 function addToFields(counter, friendId, friendName, my_id, choice, count)
 {
-	$('#friend' + counter).fadeOut(800, fade_out_callback(counter, count));
+	$('#friend' + counter).fadeOut(400, fade_out_callback(counter, count));
 	xmlHttp = GetXmlHttpObject();
 	if (xmlHttp == null)
 	{
@@ -64,7 +66,7 @@ function statusUpdate()
 {
 	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
 	{
-		//alert(xmlHttp.responseText);
+//		alert(xmlHttp.responseText);
 	//	document.getElementById(id).style.display = 'none';		
 	}
 

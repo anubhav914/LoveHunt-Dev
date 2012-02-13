@@ -11,11 +11,15 @@
 	$choice = $_POST['choice'];
 
 	$query = "DELETE FROM user_choices where uid = $my_id AND friend_id = $friendId ";
-//	echo (pg_query($conn, $query));
-
-	$query = "INSERT INTO user_choices (uid, friend_id, friend_name, choice) VALUES ($my_id, $friendId, '$friendName', '$choice')";
-	//echo($query);
+	echo($query);
 	pg_query($conn, $query);
+
+	if($choice != 'NULL')
+	{
+		$query = "INSERT INTO user_choices (uid, friend_id, friend_name, choice) VALUES ($my_id, $friendId, '$friendName', '$choice')";
+		echo($query);
+		pg_query($conn, $query);
+	}
 
 	
 	if($choice == 'likes')

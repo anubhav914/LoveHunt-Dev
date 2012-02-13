@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 
 //header('X-Frame-Options: GOFORIT'); 
 
@@ -102,7 +103,7 @@ if ($token) {
 /*	echo("<pre>");
 	print_r($friends);
 	echo("</pre>");
-*/
+ */
 }
 else
 {
@@ -115,6 +116,7 @@ else
 <? require_once("header_template.php"); ?>
 
 <div id="content">
+	
 <? $count = count($friends);
 	for ($key = 0; $key < 5; $key++)
 	{
@@ -140,13 +142,19 @@ else
 						<div class= 'friendName'>		
 							<?=$friends[$counter]['name']?> 
 							<br />
-						</div>
+						</div> <!-- div friend name ends here -->
 						<p>
 							<?=$friends[$counter]['about_me']?> <br />
 						</p>		
 						<div class = 'friendLikes'>
 							<p>
-							Few things she likes
+							Few things <?php if($gender == 'male'):
+													echo 'she';
+											else:
+													echo 'he';
+											endif;
+													
+							?> likes
 							<p>	
 							<div class="list">
 								<ul class="things">
@@ -179,7 +187,7 @@ else
 										}
 
 ?>
-				                </ul>
+				                </ul> <!-- ul things ends here-->
 				        	</div>	<!-- div list ends here--> 
 						</div> <!-- div friendLikes ends here--> 
 					</div> <!--div friendInfo end here -->
@@ -194,7 +202,9 @@ else
 		}		
 	}
 
+	require_once("no_content_template.php");
 ?>
+
 </div>		<!-- div content ends here -->
 <? require_once("footer_template.php"); ?>
 
