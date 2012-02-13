@@ -56,3 +56,26 @@ function assertNumeric($value) {
   }
 }
 
+
+/**
+ * This will return the friends which are not yet tagged by the user
+ * It searches for if the friend is already present in tagged_friends
+ * and if not it pushes it into untagged friend
+ */
+function untagged_friends($friends, $tagged_friends)
+{
+		$untagged_friends = array();
+		$key = 0;
+		foreach($friends as $friend)
+		{
+			if(in_array($friend['uid'], $tagged_friends))
+				continue;
+			else
+			{
+				$untagged_friends[$key] = $friend;
+				$key++;
+			}
+		}
+		
+		return $untagged_friends;
+}

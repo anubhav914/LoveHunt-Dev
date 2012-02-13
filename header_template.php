@@ -19,7 +19,8 @@
 		<?php echo('<meta property="fb:app_id" content="' . AppInfo::appID() . '" />'); ?>
 
 		<link rel='stylesheet' type='text/css' href='stylesheets/style.css'>
-		<script type='text/javascript' src='javascript.js'></script>
+		<script type='text/javascript' src='lovehunt.js'></script>
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
 		<script src="http://connect.facebook.net/en_US/all.js"></script>
 	</head>
 

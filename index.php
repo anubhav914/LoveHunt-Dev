@@ -79,7 +79,7 @@ else {
 		<div id="text">
 			<p>Love hunt helps you find love among friends<br />without the risk losing their friendship.</p><p>Your choices are private. We share 'Mutual<br /> Likes' with the couple only.</p>
 		</div> <!-- div text ends here-->
-		<input id="startButton" type = 'button' value = 'Start Hunting' />
+		<input id="startButton" type = 'button' value = 'Start Hunting' onclick="location.href='hunt.php'" />
 	</div> 		<!-- div description ends here -->
 	<div class="clear"></div>
 	<div id="bottomimage"></div>

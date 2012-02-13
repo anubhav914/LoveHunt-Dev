@@ -44,7 +44,7 @@ function moreout()
 	document.getElementById('more_image_hover').id='more_image';
 	document.getElementById('more_text_hover').id='more_text';
 }
-
+/*
 function GetXmlHttpObject()
 
 {
@@ -69,18 +69,18 @@ function GetXmlHttpObject()
 	return xmlHttp;
 }
 
-
+*/
 var userId;
 var var_choice
 var id;
-function addToFields(divId,friendId,uid,choice)
+/*function addToFields(divId,friendId,uid,choice)
 {
 
 /*	e = event.target;
 	if(!e)
 	{
 		e = event.srcElement;
-	} */
+	} 
 //	alert(divId.id);
 	id = divId;
 	xmlHttp = GetXmlHttpObject();
@@ -113,7 +113,7 @@ function statusUpdate()
 	}
 
 }
-
+*/
 function loadContent(page_name)
 {
 	xmlHttp = GetXmlHttpObject();
@@ -158,25 +158,4 @@ function min(a,b)
 		return b;
 }
 
-var counter = 6;
-var final_counter = 0;
-function show_more(max_counter)
-{
-	max_counter = max_counter + 1;
-	alert(final_counter);
-	if(final_counter == max_counter)
-	{//	alert(document.getElementById("more_text").innerHTML);
-		document.getElementById('more_text').innerHTML= "There are no more friends to show";
-	}
-	else
-	{
-		final_counter  = counter + 6;
-		final_counter = min(final_counter,max_counter);
-		while(counter < final_counter)
-		{
-			id = 'friend'+counter;
-			counter++;
-			document.getElementById(id).className='friends';
-		}
-	}
-}
+

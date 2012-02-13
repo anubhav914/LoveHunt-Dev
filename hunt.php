@@ -44,7 +44,7 @@ if ($token) {
   	$basic = FBUtils::fetchFromFBGraph("me?access_token=$token");
 	$my_id = assertNumeric(idx($basic, 'id'));
 	$username = idx($basic, 'username');
-	$name = idx($baisc, 'name');
+	$name = idx($basic, 'name');
 	$gender = idx($basic, 'gender');
 
 	
@@ -56,19 +56,31 @@ if ($token) {
 		$query = "INSERT INTO users (uid, username, name) values ($my_id, '$username', '$name')";
 		pg_query($conn, $query);
 	}
+	else
+	{
+		$query = "SELECT friend_id from user_choices WHERE uid = $my_id";
+		$resource = pg_query($conn, $query);
+		$array_tagged_friends = array();
+		$tagged_friends = pg_fetch_all_columns($resource, 0);
+		//print_r($tagged_friends);
+	}
+	
 	
 	$interested_in;
 	if($gender == "male")
 		$interested_in = "female" ;
 	else 
-		$interested_in = "male";	
+		$interested_in = "male";
+
+		
 		
 
 	$query = "SELECT uid, username, name, sex, pic, pic_square,interests, profile_url, movies, books, music , about_me FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me()) and sex='$interested_in' limit 20" ;
 
 	$friends = FBUtils::fql($query, $token);	
 	
-//	print_r($likes);
+	$friends = untagged_friends($friends, $tagged_friends); 
+	//	print_r($likes);
 	/*
 	// This fetches 4 of your friends.
   	$friends = array_values(
@@ -87,7 +99,10 @@ if ($token) {
 	  "SELECT profile_id, relationship FROM family WHERE profile_id = me()", $token
   );
  */	  	
-//	print_r($friends);
+/*	echo("<pre>");
+	print_r($friends);
+	echo("</pre>");
+*/
 }
 else
 {
@@ -169,9 +184,9 @@ else
 						</div> <!-- div friendLikes ends here--> 
 					</div> <!--div friendInfo end here -->
 					<div class="options">
-      					<div id='<?php echo "like$counter"; ?>' class='images likeImage' title='Like' onmouseover="change_class(event,'like')" onmouseout ="restore_class(event,'like')" ></div>
-      					<div id ='<?php echo "dislike$counter"; ?>' class='images dislikeImage' title="Dislike" onmouseover="change_class(event,'dislike')" onmouseout="restore_class(event,'dislike')" ></div>
-						<div id='<?php echo "remove$counter"; ?>' class='images removeImage' title="Remove" onmouseover="change_class(event,'remove');" onmouseout="restore_class(event,'remove')" ></div>
+						<div id='<?php echo "like$counter"; ?>' class='images likeImage' title='Like' onclick="addToFields('<?="$counter" ?>','<?=$friendId; ?>', '<?=$friends[$counter]['name'] ?>','<?=$my_id; ?>','likes', '<?=$count?>')" ></div>
+      					<div id ='<?php echo "dislike$counter"; ?>' class='images dislikeImage' title="Dislike" onclick="addToFields('<?="$counter" ?>','<?=$friendId; ?>', '<?=$friends[$counter]['name'] ?>','<?=$my_id; ?>','dislikes', '<?=$count?>')" ></div>
+						<div id='<?php echo "remove$counter"; ?>' class='images removeImage' title="Remove" onclick="addToFields('<?="$counter" ?>','<?=$friendId; ?>', '<?=$friends[$counter]['name'] ?>','<?=$my_id; ?>','removed', '<?=$count?>')" ></div>
 					</div> <!-- div options end here -->
 	
 				</div> <!--div friend$counter end here -->

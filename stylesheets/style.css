@@ -87,6 +87,7 @@ img{
 .hidden_friends
 {
 	display:none;
+	/*visibility:hidden;*/
 	width:704px;
 	padding-top:12px;
 	padding-bottom:10px;
@@ -163,18 +164,19 @@ img{
 	margin-top:7px;
 	background-image:url(../images/like.png);
 }
-/*
+
 .likeImage:hover {
-	background-image:url(images/like_hover.png);
+	background-image:url(../images/like_hover.png);
 }
-*/
+
+/*
 .likeImage_hover {
 	height:20px;
 	width:20px;
 	margin-top:7px;
 	background-image:url(../images/like_hover.png);
 }
-
+*/
 .dislikeImage {
 	height:20px;
 	width:20px;
@@ -182,11 +184,11 @@ img{
 	margin-left:10px;
 	background-image:url(../images/dislike.png);
 }
-.dislikeImage_hover {
-	height:20px;
+.dislikeImage:hover {
+/*	height:20px;
 	width:20px;
 	margin-top:7px;
-	margin-left:10px;
+	margin-left:10px;*/
 	background-image:url(../images/dislike_hover.png);
 }
 
@@ -198,11 +200,11 @@ img{
 	background-image:url(../images/remove.png);
 }
 
-.removeImage_hover{
-	height:16px;
+.removeImage:hover {
+	/*height:16px;
 	width:16px;
 	margin-top:8px;
-	margin-left:10px;
+	margin-left:10px;*/
 	background-image:url(../images/remove_hover.png);
 }
 
@@ -215,13 +217,13 @@ img{
 	background-repeat:no-repeat;
 }
 
-.tickImage_hover {
-	height:16px;
+.tickImage:hover {
+/*	height:16px;
 	width:16px;
 	margin-top:8px;
-	margin-left:50px;
+	margin-left:50px;*/
 	background-image:url(../images/tick_hover.png);
-	background-repeat:no-repeat;
+/*	background-repeat:no-repeat;*/
 
 }
 
